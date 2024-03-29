@@ -1,32 +1,49 @@
-import { fetchAllFlashcards, fetchStudySet, updateStudySet } from '../utils';
+import { deleteFlashCard, fetchAllFlashcards, fetchStudySet, updateStudySet } from '../utils';
 import { Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAutosave } from 'react-autosave';
 import Layout from './layout';
 import TermDefinition from './term-definition';
-import { Flashcard } from '../types';
+import { DatabaseFlashcard, Flashcard } from '../types';
 
 export default function StudySet() {
   const { slug } = useParams();
-  const [name, setName] = useState(''); 
+  const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [pairs, setPairs] = useState([{ term: '', definition: ''}]);
+  const [pairs, setPairs] = useState<Flashcard[] | DatabaseFlashcard[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-            if (slug) {
-                const studySetData = await fetchStudySet(slug);
-                const flashcardData = await fetchAllFlashcards(slug);
-                setName(studySetData.name);
-                setDescription(studySetData.description);
-                setPairs(flashcardData);
-            }
-    }
-
+      if (slug) {
+        const studySetData = await fetchStudySet(slug);
+        const flashcardData = await fetchAllFlashcards(slug);
+        setName(studySetData.name);
+        setDescription(studySetData.description);
+        setPairs(flashcardData);
+      }
+    };
     fetchData();
-  }, [name, description, slug])
+  }, [slug]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (slug && pairs.length > 0) {
+        if (pairs[0].term !== "" && pairs[0].definition !== "" && pairs[pairs.length - 1].term !== "" && pairs[pairs.length - 1].definition !== "") {
+          updateStudySet({ id: slug, flashcards: pairs })
+          .then((response) => {
+            if (response !== pairs) {
+              setPairs(response);
+            }
+          })
+          .catch((error) => {
+            console.error('Error updating flashcards:', error);
+          });
+        }
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [slug, pairs]);
 
   const handlePairChange = (index: number, pair: Flashcard) => {
     setPairs((prevPairs) => {
@@ -40,39 +57,32 @@ export default function StudySet() {
     setPairs([...pairs, { term: '', definition: '' }]);
   };
 
-  useAutosave({
-    data: pairs,
-    onSave: (data: Flashcard[]) => {
-      updateStudySet({ id: slug, flashcards: data })
-        .then((response) => {
-          setPairs(response);
-        })
-        .catch((error) => {
-          console.error('Error updating flashcards:', error);
-        });
-    },
-  });
-
+  const deletePair = (id: string) => {
+      deleteFlashCard(id);
+      setPairs((pairs as DatabaseFlashcard[]).filter(pair => pair.id !== id));
+    }
 
   return (
     <Layout>
-        <Typography
-            variant="h3"
-            gutterBottom
-        >{name}</Typography>
-        <p>{description}</p>
-
-        <div>
-        {Array.isArray(pairs) && pairs.map((pair, index) => (
-    <TermDefinition
-        key={index}
-        definition={pair.definition}
-        term={pair.term}
-        onChange={(updatedPair: Flashcard) => handlePairChange(index, updatedPair)}
-    />
-))}
-      <Button onClick={addPair}>New</Button>
-        </div>
+      <Typography variant="h3" gutterBottom>
+        {name}
+      </Typography>
+      <p>{description}</p>
+      <div>
+        {(pairs as DatabaseFlashcard[]).map((pair, index) => (
+          <TermDefinition
+            id={pair.id}
+            key={index}
+            index={index}
+            definition={pair.definition}
+            term={pair.term}
+            deckId={slug}
+            onDelete={deletePair}
+            onChange={(updatedPair: Flashcard) => handlePairChange(index, updatedPair)}
+          />
+        ))}
+        <Button onClick={addPair}>New</Button>
+      </div>
     </Layout>
   );
 }

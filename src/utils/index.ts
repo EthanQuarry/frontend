@@ -1,53 +1,90 @@
 import { Flashcard, StudySet } from "../types"
 
 const createStudySet = async (studySet: StudySet) => {
-    const response = await fetch('http://localhost:3000/api/decks/create', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(studySet)
-    })
-    return await response.json()
+    try {
+        const response = await fetch('http://localhost:3000/api/decks/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(studySet)
+        })
+        return await response.json()
+    } catch (error) {
+        console.error('Error creating study set:', error);
+        return { error: error }
+    }
 }
 const fetchStudySet = async (slug: string) => {
-    const response = await fetch(`http://localhost:3000/api/decks/get`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: slug })
-    })
-    return await response.json()
+    try {
+        const response = await fetch(`http://localhost:3000/api/decks/get`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: slug })
+        })
+        return await response.json()
+    } catch (error) {
+        console.error('Error fetching study set:', error);
+        return { error: error }
+
+    }
 }
 
 
 const updateStudySet = async ({ id, flashcards }: { id: string | undefined; flashcards: Flashcard[] }) => {
-    const response = await fetch(`http://localhost:3000/api/decks/update`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id, flashcards }),  });
-  
-    if (!response.ok) {
-      throw new Error('Failed to update study set');
+    try {
+        const response = await fetch(`http://localhost:3000/api/decks/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id, flashcards }),
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error updating study set:', error);
+        return { error: error }
     }
-  
-    const data = await response.json();
-    return data;
-  };
+};
 
 const fetchAllFlashcards = async (id: string) => {
-    const response = await fetch(`http://localhost:3000/api/flashcards/get`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id })
-    })
-    return await response.json()
-
+    try {
+        const response = await fetch(`http://localhost:3000/api/flashcards/get`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        })
+        return await response.json()
+    } catch (error) {
+        console.error('Error fetching flashcards:', error);
+        return { error: error }
+    }
 }
 
-export { createStudySet, fetchStudySet, updateStudySet, fetchAllFlashcards }
+const deleteFlashCard = async (id: string) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/flashcards/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        })
+        return await response.json()
+
+    } catch (error) {
+        console.error('Error deleting flashcard:', error);
+        return {
+            error: error
+        }
+    }
+}
+
+
+export { createStudySet, fetchStudySet, updateStudySet, fetchAllFlashcards, deleteFlashCard }

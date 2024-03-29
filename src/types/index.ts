@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 
 export interface StudySet {
     name: string;
@@ -5,7 +6,7 @@ export interface StudySet {
 }
 
 export interface DatabaseStudySet extends StudySet {
-    id: number;
+    id: UUID;
     flashcards: Flashcard[];
 }
 
@@ -13,4 +14,9 @@ export interface DatabaseStudySet extends StudySet {
 export interface Flashcard {
     term: string;
     definition: string;
+}
+
+export interface DatabaseFlashcard extends Flashcard {
+    id: UUID;
+    deckId: UUID;
 }
