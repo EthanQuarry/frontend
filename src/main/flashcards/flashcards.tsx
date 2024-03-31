@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { DatabaseStudySet } from '../../types';
 import { Button } from '@mui/material';
 import { createStudySet } from '../../utils';
+import backendUrl from '../../utils/env';
 
 export default function FlashCards() {
   const [decks, setDecks] = React.useState<DatabaseStudySet[]>([])
@@ -14,7 +15,7 @@ export default function FlashCards() {
 
   useEffect(() => {
     const fetchDecks = async () => {
-      const response = await fetch('http://localhost:3000/api/decks')
+      const response = await fetch(`${backendUrl}/api/decks`)
       const data: DatabaseStudySet[] = await response.json()
       return data
     }
