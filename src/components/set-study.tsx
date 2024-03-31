@@ -91,7 +91,7 @@ export default function SetStudy() {
                     </div>
                 </>
             )}
-            {(currentIndex == pairs.length) && (
+            {finished && (
                 <div>
                     <Typography variant="h4" gutterBottom>
                         You have finished the study set!
