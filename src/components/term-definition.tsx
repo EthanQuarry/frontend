@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 const theme = createTheme({
   components: {
     MuiCardHeader: {
@@ -32,7 +33,7 @@ export default function TermDefinition({
   term: string;
   definition: string;
   onDelete: (id: string) => void;
-  onChange: (data: { term: string; definition: string }) => void;
+  onChange: (data: { id: string; term: string; definition: string }) => void;
   index: number;
   deckId: string | undefined;
 }) {
@@ -42,13 +43,13 @@ export default function TermDefinition({
   const handleTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTerm = e.target.value;
     setTermState(newTerm);
-    onChange({ term: newTerm, definition: definitionState });
+    onChange({ id: id, term: newTerm, definition: definitionState });
   };
 
   const handleDefinitionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDefinition = e.target.value;
     setDefinitionState(newDefinition);
-    onChange({ term: termState, definition: newDefinition });
+    onChange({ id: id, term: termState, definition: newDefinition });
   };
 
   return (

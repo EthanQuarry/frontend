@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import Layout from './layout';
 import TermDefinition from './term-definition';
 import { DatabaseFlashcard, Flashcard } from '../types';
+import {v4 as uuidv4} from 'uuid';
 
 export default function StudySet() {
   const { slug } = useParams();
@@ -54,7 +55,11 @@ export default function StudySet() {
   };
 
   const addPair = () => {
-    setPairs([...pairs, { term: '', definition: '' }]);
+    setPairs([...pairs, { 
+      id: uuidv4(),
+      term: '', 
+      definition: '' 
+    }]);
   };
 
   const deletePair = (id: string) => {
@@ -68,7 +73,8 @@ export default function StudySet() {
         {name}
       </Typography>
       <p>{description}</p>
-      <div>
+      <br />
+      <div className=''>
         {(pairs as DatabaseFlashcard[]).map((pair, index) => (
           <TermDefinition
             id={pair.id}
@@ -81,7 +87,9 @@ export default function StudySet() {
             onChange={(updatedPair: Flashcard) => handlePairChange(index, updatedPair)}
           />
         ))}
-        <Button onClick={addPair}>New</Button>
+        <Button 
+        fullWidth
+        variant='outlined' onClick={addPair}>New</Button>
       </div>
     </Layout>
   );

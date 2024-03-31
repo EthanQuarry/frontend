@@ -22,7 +22,7 @@ export default function FlashCards() {
     fetchDecks().then((data) => {
       setDecks(data)
     })
-  }, [decks])
+  },[])
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -50,10 +50,14 @@ export default function FlashCards() {
             variant="contained"
             color='success'
             size='large'
-            onClick={() => createStudySet({
-              name: name,
-              description: description
-            })}>Create</Button>
+            onClick={() => {
+              createStudySet({
+                name: name,
+                description: description
+              })
+              setName('')
+              setDescription('')
+            }}>Create</Button>
         </form>
 
 
