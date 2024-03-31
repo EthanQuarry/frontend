@@ -73,8 +73,8 @@ export default function FlashCards() {
                 <p>{item.description}</p>
               </div>
               <div className='flex space-x-2'>
-                <Button href={`/study-set/${item.id}`} variant="outlined" color='warning' size='large'>Edit</Button>
-                <Button variant="contained" color='success' size='large'>Study</Button>
+                <Button href={`/edit/${item.id}`} variant="outlined" color='warning' size='large'>Edit</Button>
+                <Button href={`/study/${item.id}`} variant="outlined" color='success' size='large'>Study</Button>
               </div>
             </div>
           )

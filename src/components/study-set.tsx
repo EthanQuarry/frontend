@@ -7,7 +7,7 @@ import TermDefinition from './term-definition';
 import { DatabaseFlashcard, Flashcard } from '../types';
 import {v4 as uuidv4} from 'uuid';
 
-export default function StudySet() {
+export default function SetEdit() {
   const { slug } = useParams();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');

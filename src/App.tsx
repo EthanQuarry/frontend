@@ -3,7 +3,8 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
 import FlashCards from './main/flashcards/flashcards';
 import Dashboard from './main/dashboard/dashboard';
-import StudySet from './components/study-set';
+import SetEdit from './components/study-set';
+import SetStudy from './components/set-study';
 
 
 const App: React.FC = () => {
@@ -12,7 +13,8 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<FlashCards />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/study-set/:slug" element={<StudySet />} />
+        <Route path="/edit/:slug" element={<SetEdit />} />
+        <Route path="/study/:slug" element={<SetStudy />} />
       </Routes>
     </Router>
  );
