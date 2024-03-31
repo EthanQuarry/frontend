@@ -2,7 +2,7 @@ import { Flashcard, StudySet } from "../types"
 
 const createStudySet = async (studySet: StudySet) => {
     try {
-        const response = await fetch('http://localhost:3000/api/decks/create', {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/decks/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ const createStudySet = async (studySet: StudySet) => {
 }
 const fetchStudySet = async (slug: string) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/decks/get`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/decks/get`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ const fetchStudySet = async (slug: string) => {
 
 const updateStudySet = async ({ id, flashcards }: { id: string | undefined; flashcards: Flashcard[] }) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/decks/update`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/decks/update`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const updateStudySet = async ({ id, flashcards }: { id: string | undefined; flas
 
 const fetchAllFlashcards = async (id: string) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/flashcards/get`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/flashcards/get`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ const fetchAllFlashcards = async (id: string) => {
 
 const deleteFlashCard = async (id: string) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/flashcards/delete`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/flashcards/delete`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
