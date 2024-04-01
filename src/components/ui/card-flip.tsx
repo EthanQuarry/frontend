@@ -2,8 +2,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Card, CardAnimation, CardDescription, CardTerm } from "./card"
 
-export default function CardFlip({ term, definition }: { term: string; definition: string }) {
-    const [isFlipped, setIsFlipped] = useState(false)
+export default function CardFlip({ isFlipped, setIsFlipped, term, definition }: {isFlipped: boolean; setIsFlipped: (value: boolean) => void; term: string; definition: string }) {
     const [isAnimating, setIsAnimating] = useState(false)
 
     

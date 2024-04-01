@@ -13,6 +13,7 @@ export default function SetStudy() {
     const [description, setDescription] = useState('');
     const [pairs, setPairs] = useState<Flashcard[] | DatabaseFlashcard[]>([]);
     const [fails, setFails] = useState<Flashcard[] | DatabaseFlashcard[]>([]);
+    const [isFlipped, setIsFlipped] = useState(false)
     const [finished, setFinished] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -39,6 +40,7 @@ export default function SetStudy() {
             });
             setFinished(true);
         } else {
+            setIsFlipped(false);
             setFails((prevFails) => {
                 return [...prevFails, pairs[currentIndex]];
             });
@@ -55,6 +57,7 @@ export default function SetStudy() {
             });
             setFinished(true);
         } else {
+            setIsFlipped(false);
             setCurrentIndex((prevIndex) => {
                 return prevIndex + 1;
             });
@@ -71,6 +74,8 @@ export default function SetStudy() {
             {(pairs.length > 0 && (currentIndex !== pairs.length)) && (
                 <>
                     <CardFlip
+                        isFlipped={isFlipped}
+                        setIsFlipped={setIsFlipped}
                         term={pairs[currentIndex].term}
                         definition={pairs[currentIndex].definition}
                     />
